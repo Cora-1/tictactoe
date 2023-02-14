@@ -71,7 +71,42 @@
     <button id="reset-button">Restart</button>
 
     <script>
-        /* JavaScript code for the game goes here */
-    </script>
-</body>
-</html>
+        // Select the game board and status message elements
+        const gameBoard = document.getElementById("game-board");
+        const statusMessage = document.getElementById("status-message");
+
+        // Create an array to represent the game board state
+        let gameBoardState = ["", "", "", "", "", "", "", "", ""];
+
+        // Define the symbols for the players
+        const player1Symbol = "X";
+        const player2Symbol = "O";
+
+        // Define the current player and bot player
+        let currentPlayer = player1Symbol;
+        let botPlayer = player2Symbol;
+
+        // Define the function to handle a player's move
+        function handlePlayerMove(cell, cellIndex) {
+            // Only handle the move if the cell is empty and the game is not over
+            if (gameBoardState[cellIndex] === "" && !isGameOver()) {
+                // Update the game board state with the player's symbol
+                gameBoardState[cellIndex] = currentPlayer;
+                // Update the cell text content with the player's symbol
+                cell.textContent = currentPlayer;
+                // Check if the game is over after the player's move
+                if (isGameOver()) {
+                    showGameOverMessage();
+                } else {
+                    // Switch to the other player's turn
+                    switchPlayer();
+                    // Make the bot player move after a short delay
+                    setTimeout(makeBotPlayerMove, 1000);
+                }
+            }
+        }
+
+        // Define the function to switch to the other player's turn
+        function switchPlayer() {
+            currentPlayer = currentPlayer === player1Symbol ? player2Symbol : player1Symbol;
+            botPlayer = botPlayer === player1Symbol ?
