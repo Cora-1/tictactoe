@@ -4,34 +4,19 @@
     <meta charset="UTF-8">
     <title>Tic Tac Toe</title>
     <style>
-        /* Styles for the game board */
-        #game-board {
+        /* Styles for the header */
+        header {
             display: flex;
-            flex-wrap: wrap;
-            width: 300px;
-            height: 300px;
-            border: 3px solid #333;
-        }
-
-        #game-board div {
-            display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            font-size: 3em;
-            width: 100px;
-            height: 100px;
-            background-color: #EEE;
-            cursor: pointer;
+            background-color: #222;
+            color: #FFF;
+            padding: 20px;
         }
 
-        #game-board div:hover {
-            background-color: #DDD;
-        }
-
-        /* Styles for the status message */
-        #status-message {
-            font-size: 2em;
-            margin: 20px 0;
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
         }
 
         /* Styles for the reset button */
@@ -49,64 +34,90 @@
         #reset-button:hover {
             background-color: #FF5E5E;
         }
+
+        /* Styles for the main content */
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+        }
+
+        /* Styles for the game board */
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            margin: 30px;
+            border: 2px solid #222;
+            border-radius: 10px;
+            background-color: #EEE;
+            padding: 20px;
+        }
+
+        /* Styles for the game cells */
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5em;
+            color: #222;
+            background-color: #FFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .cell:hover {
+            background-color: #DDD;
+        }
+
+        /* Styles for the game status message */
+        #status {
+            margin-top: 20px;
+            font-size: 2em;
+        }
+
+        /* Styles for the "You're a loser" message */
+        #loser {
+            font-size: 3em;
+            color: #FF5E5E;
+            text-align: center;
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <h1>Tic Tac Toe</h1>
+    <header>
+        <h1>Tic Tac Toe</h1>
+        <button id="reset-button">Reset Game</button>
+    </header>
 
-    <div id="game-board">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-
-    <div id="status-message"></div>
-
-    <button id="reset-button">Restart</button>
+    <main>
+        <div id="board">
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+        </div>
+        <div id="status"></div>
+        <div id="loser">You're a loser!</div>
+    </main>
 
     <script>
-        // Select the game board and status message elements
-        const gameBoard = document.getElementById("game-board");
-        const statusMessage = document.getElementById("status-message");
+        const board = document.getElementById("board");
+        const cells = document.querySelectorAll(".cell");
+        const status = document.getElementById("status");
+        const resetButton = document.getElementById("reset-button");
+        const loser = document.getElementById("loser");
 
-        // Create an array to represent the game board state
-        let gameBoardState = ["", "", "", "", "", "", "", "", ""];
+        let currentPlayer = "X";
+        let gameEnded = false;
 
-        // Define the symbols for the players
-        const player1Symbol = "X";
-        const player2Symbol = "O";
-
-        // Define the current player and bot player
-        let currentPlayer = player1Symbol;
-        let botPlayer = player2Symbol;
-
-        // Define the function to handle a player's move
-        function handlePlayerMove(cell, cellIndex) {
-            // Only handle the move if the cell is empty and the game is not over
-            if (gameBoardState[cellIndex] === "" && !isGameOver()) {
-                // Update the game board state with the player's symbol
-                gameBoardState[cellIndex] = currentPlayer;
-                // Update the cell text content with the player's symbol
-                cell.textContent = currentPlayer;
-                // Check if the game is over after the player's move
-                if (isGameOver()) {
-                    showGameOverMessage();
-                } else {
-                    // Switch to the other player's turn
-                    switchPlayer();
-                    // Make the bot player move after a short delay
-                    setTimeout(makeBotPlayerMove, 1000);
-                }
-            }
-        }
-
-        // Define the function to switch to the other player's turn
-        function switchPlayer() {
-            currentPlayer = currentPlayer === player1Symbol ? player2Symbol : player1Symbol;
-            botPlayer = botPlayer === player1Symbol ?
+        // Add an event listener to each
