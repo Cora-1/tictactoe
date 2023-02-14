@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <style>
+        /* Styles for the header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #222;
+            color: #FFF;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        /* Styles for the button */
+        #play-button {
+            font-size: 1.2em;
+            padding: 10px;
+            background-color: #FFC0CB;
+            color: #FFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #play-button:hover {
+            background-color: #FF5E5E;
+        }
+
+        /* Styles for the main content */
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+        }
+
+        main p {
+            font-size: 3em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Website</h1>
+        <button id="play-button">Play Tic Tac Toe</button>
+    </header>
+
+    <main>
+        <p>Welcome to my website</p>
+    </main>
+
+    <script>
+        // Select the play button element
+        const playButton = document.getElementById("play-button");
+
+        // Add an event listener to the play button to navigate to the Tic Tac Toe game
+        playButton.addEventListener("click", () => {
+            window.location.href = "tictactoe.html";
+        });
+    </script>
+</body>
+</html>
